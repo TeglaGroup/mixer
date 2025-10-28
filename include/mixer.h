@@ -29,9 +29,11 @@ struct mixer_audio {
 	void* opaque;
 	int loop;
 	int stopped;
+	double volume;
 
 	void(*destroy)(mixer_audio_t* audio);
 	int(*read_frame)(mixer_audio_t* audio, double* buffer, int frames);
+	void(*reset)(mixer_audio_t* audio);
 
 	mixer_audio_t* next;
 };
@@ -42,9 +44,12 @@ void mixer_close_device(mixer_t* handle);
 void mixer_mix(mixer_t* handle, void* buffer, int frames);
 mixer_audio_t* mixer_new_audio(mixer_t* handle);
 void mixer_destroy_audio(mixer_t* handle, mixer_audio_t* audio);
+void mixer_audio_start(mixer_t* handle, mixer_audio_t* audio);
+void mixer_audio_set_loop(mixer_t* handle, mixer_audio_t* audio, int toggle);
+void mixer_audio_set_volume(mixer_t* handle, mixer_audio_t* audio, double volume);
 
-/* sndfile.c */
-mixer_audio_t* mixer_open_file(mixer_t* mixer, const char* filename, int loop);
+/* file.c */
+mixer_audio_t* mixer_open_file(mixer_t* mixer, const char* filename);
 
 /* mutex.c */
 void* mixer_mutex_create(void);

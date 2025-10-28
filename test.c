@@ -4,7 +4,10 @@
 
 int main(){
 	mixer_t* mixer = mixer_open_device();
-	mixer_audio_t* audio = mixer_open_file(mixer, "aryx.mp3", 0);
+	mixer_audio_t* audio = mixer_open_file(mixer, "aryx.s3m");
+
+	mixer_audio_set_loop(mixer, audio, 1);
+	mixer_audio_start(mixer, audio);
 
 	while(1) usleep(10);
 

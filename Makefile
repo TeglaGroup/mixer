@@ -1,10 +1,10 @@
 CC = gcc
 AR = ar
-CFLAGS = -fPIC -I include `pkg-config --cflags sndfile` `pkg-config --cflags ao`
+CFLAGS = -fPIC -I include `pkg-config --cflags sndfile` `pkg-config --cflags libxmp` `pkg-config --cflags ao`
 LDFLAGS =
-LIBS = `pkg-config --libs sndfile` `pkg-config --libs ao` -lpthread
+LIBS = `pkg-config --libs sndfile` `pkg-config --libs libxmp` `pkg-config --libs ao` -lpthread
 
-OBJS += src/mixer.o src/sndfile.o
+OBJS += src/mixer.o src/file.o
 OBJS += src/mutex.o src/thread.o
 OBJS += src/ao-backend.o
 

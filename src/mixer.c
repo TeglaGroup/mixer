@@ -32,6 +32,7 @@ mixer_audio_t* mixer_new_audio(mixer_t* handle){
 
 	a->stopped = 1;
 	a->loop = 0;
+	a->volume = 1;
 
 	mixer_mutex_lock(handle->mutex);
 	if(handle->audios == NULL){
@@ -84,11 +85,15 @@ void mixer_mix(mixer_t* handle, void* buffer, int frames){
 				double* t = malloc(frames * sizeof(*t) * 2);
 
 				if(l->read_frame(l, t, frames) < frames){
-					l->stopped = 1;
+					if(l->loop){
+						if(l->reset != NULL) l->reset(l);
+					}else{
+						l->stopped = 1;
+					}
 				}
 
 				for(i = 0; i < frames * 2; i++){
-					r[i] += t[i];
+					r[i] += t[i] * l->volume;
 				}
 
 				free(t);
@@ -110,4 +115,22 @@ void mixer_mix(mixer_t* handle, void* buffer, int frames){
 	}
 
 	free(r);
+}
+
+void mixer_audio_start(mixer_t* handle, mixer_audio_t* audio){
+	mixer_mutex_lock(handle->mutex);
+	audio->stopped = 0;
+	mixer_mutex_unlock(handle->mutex);
+}
+
+void mixer_audio_set_loop(mixer_t* handle, mixer_audio_t* audio, int toggle){
+	mixer_mutex_lock(handle->mutex);
+	audio->loop = toggle;
+	mixer_mutex_unlock(handle->mutex);
+}
+
+void mixer_audio_set_volume(mixer_t* handle, mixer_audio_t* audio, double volume){
+	mixer_mutex_lock(handle->mutex);
+	audio->volume = volume;
+	mixer_mutex_unlock(handle->mutex);
 }
