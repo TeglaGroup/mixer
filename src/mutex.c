@@ -1,7 +1,5 @@
 #include <mixer.h>
 
-#include <stdlib.h>
-
 #ifdef _WIN32
 /* TODO */
 #else

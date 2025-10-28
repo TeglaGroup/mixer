@@ -4,7 +4,8 @@ CFLAGS = -fPIC -I include `pkg-config --cflags sndfile` `pkg-config --cflags ao`
 LDFLAGS =
 LIBS = `pkg-config --libs sndfile` `pkg-config --libs ao` -lpthread
 
-OBJS += src/mixer.o src/mutex.o
+OBJS += src/mixer.o src/sndfile.o
+OBJS += src/mutex.o src/thread.o
 OBJS += src/ao-backend.o
 
 .PHONY: all clean
@@ -19,4 +20,4 @@ libmixer.so: $(OBJS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f libmixer.so
+	rm -f libmixer.so src/*.o
