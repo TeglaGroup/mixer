@@ -22,7 +22,12 @@ void mixer_close_device(mixer_t* handle){
 	mixer_mutex_unlock(handle->mutex);
 
 	mixerdrv_close_device(handle);
+
+	while(handle->audios != NULL){
+		mixer_destroy_audio(handle, handle->audios);
+	}
 	mixer_mutex_destroy(handle->mutex);
+	free(handle);
 }
 
 mixer_audio_t* mixer_new_audio(mixer_t* handle){

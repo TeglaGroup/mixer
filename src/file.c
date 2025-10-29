@@ -1,9 +1,6 @@
 #include <mixer.h>
 
 #include <sndfile.h>
-#include <stdlib.h>
-#include <unistd.h>
-
 #include <xmp.h>
 
 typedef struct fileaudio {

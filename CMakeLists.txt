@@ -25,7 +25,15 @@ set(SRC
 
 add_library(TeglaMixer SHARED ${SRC})
 
+target_link_directories(TeglaMixer
+    PRIVATE
+    ${SNDFILE_LIBRARY_DIRS}
+    ${LIBXMP_LIBRARY_DIRS}
+    ${AO_LIBRARY_DIRS}
+)
+
 target_link_libraries(TeglaMixer
+    PRIVATE
     ${SNDFILE_LIBRARIES}
     ${LIBXMP_LIBRARIES}
     ${AO_LIBRARIES}
