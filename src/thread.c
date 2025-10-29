@@ -30,7 +30,7 @@ void* mixer_thread_create(mixer_thread_handler_t handler, void* arg){
 void mixer_thread_destroy(void* handle){
 	void* value;
 
-	pthread_join(handle, &value);
+	pthread_join(*(pthread_t*)handle, &value);
 
 	free(handle);
 }
