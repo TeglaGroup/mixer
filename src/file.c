@@ -1,6 +1,9 @@
 #include <mixer.h>
 
 #include <sndfile.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 #include <xmp.h>
 
 typedef struct fileaudio {
@@ -72,6 +75,12 @@ static void reset(mixer_audio_t* audio){
 mixer_audio_t* mixer_open_file(mixer_t* mixer, const char* filename){
 	mixer_audio_t* a;
 	fileaudio_t* s = malloc(sizeof(*s));
+
+	if (access(filename, F_OK) != 0) {
+		fprintf(stderr, "[TeglaMixer ERROR] file not found: %s\n", filename);
+		free(s);
+		return NULL;
+	}
 
 	s->use_xmp = 0;
 	s->xmp = xmp_create_context();
